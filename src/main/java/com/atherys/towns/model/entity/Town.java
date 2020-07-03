@@ -11,6 +11,7 @@ import org.spongepowered.api.world.World;
 
 import javax.annotation.Nonnull;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -62,6 +63,8 @@ public class Town implements Identifiable<Long> {
     private boolean pvpEnabled;
 
     private UUID bank;
+
+    private LocalDateTime lastTaxDate;
 
     @Version
     private int version;
@@ -220,4 +223,11 @@ public class Town implements Identifiable<Long> {
         this.bank = bank;
     }
 
+    public LocalDateTime getLastTaxDate() {
+        return lastTaxDate;
+    }
+
+    public void setLastTaxDate(LocalDateTime lastTaxDate) {
+        this.lastTaxDate = lastTaxDate;
+    }
 }
