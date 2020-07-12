@@ -254,7 +254,7 @@ public class TownFacade implements EconomyFacade {
             throw new TownsCommandException("New plot does not border the town it's being claimed for.");
         }
 
-        if(town.isPlotClaimingDisabled()) {
+        if (town.isPlotClaimingDisabled()) {
             throw new TownsCommandException("Plot claiming has been disabled due to unpaid taxes!");
         }
 

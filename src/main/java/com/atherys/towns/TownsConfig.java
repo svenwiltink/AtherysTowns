@@ -9,7 +9,6 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import org.spongepowered.api.service.economy.Currency;
 
 import java.io.IOException;
-import java.time.Duration;
 
 
 @Singleton

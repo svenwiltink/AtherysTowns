@@ -13,7 +13,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.text.Text;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 public class NationService {
