@@ -2,12 +2,14 @@ package com.atherys.towns;
 
 import com.atherys.core.utils.PluginConfig;
 import com.atherys.towns.config.NationConfig;
+import com.atherys.towns.config.TaxConfig;
 import com.atherys.towns.config.TownConfig;
 import com.google.inject.Singleton;
 import ninja.leaping.configurate.objectmapping.Setting;
 import org.spongepowered.api.service.economy.Currency;
 
 import java.io.IOException;
+import java.time.Duration;
 
 
 @Singleton
@@ -25,9 +27,6 @@ public class TownsConfig extends PluginConfig {
     @Setting("min-residents-to-create-town")
     public int MIN_RESIDENTS_TOWN_CREATE = 3;
 
-    @Setting("tax-collection-interval")
-    public Duration TAX_COLLECTION_DURATION;
-
     @Setting("respawn-in-town")
     public boolean SPAWN_IN_TOWN = true;
 
@@ -36,6 +35,9 @@ public class TownsConfig extends PluginConfig {
 
     @Setting("town")
     public TownConfig TOWN = new TownConfig();
+
+    @Setting("taxes")
+    public TaxConfig TAXES = new TaxConfig();
 
     protected TownsConfig() throws IOException {
         super("config/" + AtherysTowns.ID, "config.conf");

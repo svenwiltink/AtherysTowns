@@ -29,7 +29,8 @@ import javax.annotation.Nonnull;
         SetNationCapitalCommand.class,
         SetNationNameCommand.class,
         SetNationDescriptionCommand.class,
-        NationRoleCommand.class
+        NationRoleCommand.class,
+        SetNationTaxCommand.class
 })
 @HelpCommand(title = "Nation Help", command = "help")
 public class NationCommand implements PlayerCommand {

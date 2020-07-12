@@ -183,6 +183,10 @@ public class TownFacade implements EconomyFacade {
     public void setPlayerTownPvp(Player player, boolean pvp) throws TownsCommandException {
         Town town = getPlayerTown(player);
 
+        if (town.isPvpToggleDisabled()) {
+            throw new TownsCommandException("Unable to change PvP status as taxes are unpaid!");
+        }
+
         townService.setTownPvp(town, pvp);
         townsMsg.info(player, "Your town now has PvP ", pvp ? "enabled." : "disabled.");
     }
@@ -248,6 +252,10 @@ public class TownFacade implements EconomyFacade {
 
         if (!plotService.plotBordersTown(town, plot)) {
             throw new TownsCommandException("New plot does not border the town it's being claimed for.");
+        }
+
+        if(town.isPlotClaimingDisabled()) {
+            throw new TownsCommandException("Plot claiming has been disabled due to unpaid taxes!");
         }
 
         townService.claimPlotForTown(plot, town);

@@ -66,6 +66,14 @@ public class Town implements Identifiable<Long> {
 
     private LocalDateTime lastTaxDate;
 
+    private int taxFailedCount;
+
+    private boolean plotClaimingDisabled;
+
+    private boolean pvpToggleDisabled;
+
+    private double debt;
+
     @Version
     private int version;
 
@@ -224,10 +232,42 @@ public class Town implements Identifiable<Long> {
     }
 
     public LocalDateTime getLastTaxDate() {
-        return lastTaxDate;
+        return this.lastTaxDate;
     }
 
     public void setLastTaxDate(LocalDateTime lastTaxDate) {
         this.lastTaxDate = lastTaxDate;
+    }
+
+    public int getTaxFailedCount() {
+        return this.taxFailedCount;
+    }
+
+    public void setTaxFailedCount(int taxFailedCount) {
+        this.taxFailedCount = taxFailedCount;
+    }
+
+    public double getDebt() {
+        return this.debt;
+    }
+
+    public void setDebt(double debt) {
+        this.debt = debt;
+    }
+
+    public boolean isPlotClaimingDisabled() {
+        return this.plotClaimingDisabled;
+    }
+
+    public void setPlotClaimingDisabled(boolean plotClaimingDisabled) {
+        this.plotClaimingDisabled = plotClaimingDisabled;
+    }
+
+    public boolean isPvpToggleDisabled() {
+        return this.pvpToggleDisabled;
+    }
+
+    public void setPvpToggleDisabled(boolean pvpToggleDisabled) {
+        this.pvpToggleDisabled = pvpToggleDisabled;
     }
 }
