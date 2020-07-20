@@ -1,10 +1,7 @@
 package com.atherys.towns.facade;
 
-import com.atherys.towns.TownsConfig;
 import com.atherys.towns.api.command.TownsCommandException;
-import com.atherys.towns.model.entity.Plot;
-import com.atherys.towns.plot.PlotSelection;
-import com.atherys.towns.service.PlotService;
+import com.atherys.towns.model.PlotSelection;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.command.CommandException;
@@ -21,12 +18,9 @@ import java.util.UUID;
 public class PlotSelectionFacade {
 
     private final Map<UUID, PlotSelection> selections = new HashMap<>();
-    @Inject
-    TownsConfig config;
+
     @Inject
     TownsMessagingFacade townMsg;
-    @Inject
-    PlotService plotService;
 
     private PlotSelection getOrCreateSelection(Player player) {
         if (selections.containsKey(player.getUniqueId())) {
@@ -51,31 +45,6 @@ public class PlotSelectionFacade {
         townMsg.info(player, "You have cleared your selection.");
     }
 
-    /**
-     * Calculate the area of a plot selection.
-     *
-     * @param plotSelection The selection whose area is to be calculated
-     * @return The plot selection area, or -1 if the plot selection is invalid ( null or incomplete )
-     */
-    private int getPlotSelectionArea(PlotSelection plotSelection) {
-        if (plotSelection == null || !plotSelection.isComplete()) {
-            return -1;
-        }
-
-        return Math.abs(plotSelection.getPointA().getBlockX() - plotSelection.getPointB().getBlockX()) *
-                Math.abs(plotSelection.getPointA().getBlockZ() - plotSelection.getPointB().getBlockZ());
-    }
-
-    private int getSmallestPlotSelectionSideSize(PlotSelection plotSelection) {
-        if (plotSelection == null || !plotSelection.isComplete()) {
-            return -1;
-        }
-
-        int sideX = Math.abs(plotSelection.getPointA().getBlockX() - plotSelection.getPointB().getBlockX());
-        int sideZ = Math.abs(plotSelection.getPointA().getBlockZ() - plotSelection.getPointB().getBlockZ());
-        return Math.min(sideX, sideZ);
-    }
-
     public void selectPointAFromPlayerLocation(Player player) {
         selectPointAAtLocation(player, player.getLocation());
         sendPointSelectionMessage(player, "A");
@@ -94,38 +63,17 @@ public class PlotSelectionFacade {
 
     /**
      * Validate a plot selection.
-     *
-     * @param selection the selection to be validated
-     * @throws CommandException if the plot selection is null, is incomplete ( either point A or point B is null ),
-     *                          it's area is greater than the maximum configured, or it's smallest side is smaller than the minimum configured
+     * @param selection
+     * @param player
+     * @throws CommandException
      */
     public void validatePlotSelection(PlotSelection selection, Player player) throws CommandException {
-
         if (selection == null) {
             throw new TownsCommandException("Plot selection is null.");
         }
 
         if (!selection.isComplete()) {
             throw new TownsCommandException("Plot selection is incomplete.");
-        }
-
-        int selectionArea = getPlotSelectionArea(selection);
-        if (selectionArea > config.TOWN.MAX_PLOT_AREA) {
-            throw new TownsCommandException("Plot selection has an area greater than permitted ( ", selectionArea, " > ", config.TOWN.MAX_PLOT_AREA, " )");
-        }
-
-        int smallestSide = getSmallestPlotSelectionSideSize(selection);
-        if (smallestSide < config.TOWN.MIN_PLOT_SIDE - 1) {
-            throw new TownsCommandException("Plot selection has a side smaller than permitted ( ", smallestSide, " < ", config.TOWN.MIN_PLOT_SIDE, " )");
-        }
-
-        Plot plot = plotService.createPlotFromSelection(selection);
-        if (plotService.plotIntersectsAnyOthers(plot)) {
-            throw new TownsCommandException("The plot selection intersects with an already-existing plot.");
-        }
-
-        if (!plotService.isLocationWithinPlot(player.getLocation(), plot)) {
-            throw new TownsCommandException("You must be within your plot selection!");
         }
     }
 
